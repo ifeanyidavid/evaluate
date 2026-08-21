@@ -1,15 +1,25 @@
 {
   "name": "@huvrdata/evaluate",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "evaluate calculations using custom formulas - based on formulajs and mathjs",
-  "main": "dist/evaluate.js",
+  "main": "dist/evaluate.cjs",
   "module": "dist/evaluate.mjs",
-  "scripts": {
-    "build": "make build",
-    "dist": "make dist",
-    "release": "make release",
-    "test": "make test"
+  "exports": {
+    ".": {
+      "import": "./dist/evaluate.mjs",
+      "require": "./dist/evaluate.cjs",
+      "default": "./dist/evaluate.cjs"
+    }
   },
+  "scripts": {
+    "test": "node --trace-uncaught ./test/index.test.js",
+    "build": "npx rollup --config rollup.config.js",
+    "dist": "npm run test && npm run build",
+    "release": "np --no-tests",
+    "docs:dev": "npm run build && cd docs && npm install && npm run dev",
+    "docs:build": "cd docs && npm install && npm run build",
+    "vercel-build": "npm run build && npm run docs:build"
+  },  
   "files": [
     "README.md",
     "LICENSE",
@@ -27,11 +37,13 @@
   },
   "homepage": "https://github.com/huvrdata/evaluate#readme",
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-commonjs": "^28.0.3",
     "esbuild": "^0.23.1",
     "np": "^7.6.2"
   },
   "dependencies": {
-    "@formulajs/formulajs": "^4.4.6",
-    "mathjs": "^13.1.1"
+    "@formulajs/formulajs": "^4.4.11",
+    "mathjs": "^13.2.3"
   }
 }
